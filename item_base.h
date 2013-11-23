@@ -15,13 +15,16 @@ class base_item
         ~base_item();
 
                 item_type                 get_type();
-                std::string&              get_name();
-                std::vector<std::string>& get_actions();
+                std::string               get_name();
+                std::vector<std::string>  get_actions();
 
-        virtual std::string&              interact(int action_num);
+        virtual std::string               interact(int action_num);
 
     private:
                 item_type                 type;
                 std::string               name;
                 std::vector<std::string>  actions;
 };
+
+
+#endif
