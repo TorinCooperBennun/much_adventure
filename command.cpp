@@ -72,7 +72,7 @@ std::string command_obj::execute(wagn *wign)
                        << "Say 'help' followed by a command to get more information on it!";
         }
         else if (parameters.size() > 1) {
-            wign->print("Too many parameters! Either use 'help' on its own, or put one command name after it.");
+            wign->print("Too many parameters! Either use \'help\' on its own, or put one command name after it.");
             valid = false;
         }
         else if (parameters.size() == 1) {
@@ -90,7 +90,11 @@ std::string command_obj::execute(wagn *wign)
             }
             /* help quit */
             else if ((parameters[0] == "quit") or (parameters[0] == "exit") or (parameters[0] == "q")) {
-                helpstring << "Quits game.";
+                helpstring << "Quits game (you may use \'quit\', \'q\' or \'exit\').";
+            }
+            /* help help */
+            else if ((parameters[0] == "help")) {
+                helpstring << "Shows help (obviously).";
             }
             /* unrecognised */
             else {

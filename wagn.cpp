@@ -23,6 +23,13 @@
 
 wagn::wagn()
 {
+    std::stringstream notices;
+    notices << "wagnventures Copyright (C) 2013 Torin Cooper-Bennun\r\n"
+            << "This program comes with ABSOLUTELY NO WARRANTY.\r\n"
+            << "\r\n"
+            << "Type \'help\' for a list of commands.\r\n";
+    this->print(notices.str());
+
     map_width = 101;
     map_height = 101;
     closed = false;
