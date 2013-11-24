@@ -1,5 +1,10 @@
+//#if (!defined COMMAND_H) && (!defined WAGN_H_COMMAND_OBJ_DECLARED)
 #ifndef COMMAND_H
 #define COMMAND_H
+
+
+/* resolving cyclical dependency */
+class wagn;
 
 
 #include "wagn.h"

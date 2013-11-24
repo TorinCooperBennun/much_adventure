@@ -6,8 +6,8 @@ wagn::wagn()
     map_width = 101;
     map_height = 101;
     closed = false;
-    coord_x = max_width / 2;
-    coord_y = max_height / 2;
+    coord_x = map_width / 2;
+    coord_y = map_height / 2;
 }
 
 
@@ -28,12 +28,13 @@ void wagn::print_info()
 
 void wagn::print(std::string str)
 {
-    std::cout << "Top lel! " << str << "\r\n";
+    std::cout << str << "\r\n";
 }
 
 
 command_obj wagn::get_input()
 {
+    std::cout << ">";
     std::string input;
     std::getline(std::cin, input);
     command_obj cmd(input);
@@ -45,15 +46,15 @@ void wagn::generate_spaces()
 {
     /* this is the biggest hack known to man.
      * I honestly don't know any more. */
-    space_map = std::vector<std::vector<space_obj>> (
-        max_width, std::vector<space_obj> (
-            max_height, space_obj(SPACE_EMPTY)
+    space_map = std::vector< std::vector<space_obj> > (
+        map_width, std::vector<space_obj> (
+            map_height, space_obj(SPACE_ROOM)
         )
     );
 }
 
 
-bool is_closed()
+bool wagn::is_closed()
 {
     return closed;
 }
