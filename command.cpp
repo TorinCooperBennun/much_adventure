@@ -245,11 +245,83 @@ std::string command_obj::execute(wagn *wign)
                     }
 
                     if (!hit_wall and !locked_door) {
+                        std::stringstream movestr;
+                        movestr << "You move ";
+
+                        if (dir == DIR_NORTH) {
+                            movestr << "north";
+                        }
+                        else if (dir == DIR_EAST) {
+                            movestr << "east";
+                        }
+                        else if (dir == DIR_SOUTH) {
+                            movestr << "south";
+                        }
+                        else if (dir == DIR_WEST) {
+                            movestr << "west";
+                        }
+
+                        if (door) {
+                            movestr << " and pass through an open door.";
+                        }
+                        else {
+                            movestr << ".";
+                        }
+
+                        wign->print(movestr.str());
+
                         command_obj look_cmd("look");
                         look_cmd.execute(wign);
                     }
                 }
             }
+        }
+    }
+
+    /* look */
+    else if ((action == "look") or (action == "see")) {
+
+        if (parameters.size() != 0) {
+            wign->print("'look' doesn't take parameters!");
+            valid = false;
+        }
+        else {
+            space_obj &space = wign->space_map[wign->coord_x][wign->coord_y];
+            std::vector<base_item> &items = space.get_items();
+
+            std::stringstream lookstr;
+            lookstr << "You look around and see ";
+
+            if (items.size() == 0) {
+                lookstr << "basically nothing.";
+            }
+            else {
+                for (unsigned i = 0; i < items.size(); i++) {
+                    std::string name = items[i].get_name();
+
+                    if (i == items.size() - 1) {
+                        lookstr << " and ";
+                    }
+
+                    char c = tolower(name[0]);
+                    if ((c == 'a') or (c == 'e') or (c == 'i') or (c == 'o') or (c == 'u')) {
+                        lookstr << "an ";
+                    }
+                    else {
+                        lookstr << "a ";
+                    }
+                    lookstr << name;
+                    
+                    if (i < items.size() - 2) {
+                        lookstr << ", ";
+                    }
+                    else if (i == items.size() - 1) {
+                        lookstr << ".";
+                    }
+                }
+            }
+
+            wign->print(lookstr.str());
         }
     }
 

@@ -30,6 +30,7 @@ enum item_type
 	POTION,
 	TREASURE,
 	MONEY,
+        NPC,
         NULL_TYPE,
 };
 

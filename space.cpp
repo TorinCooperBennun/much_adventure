@@ -24,7 +24,7 @@
 void space_obj::set_default_values()
 {
     type = SPACE_EMPTY;
-    max_items = 25;
+    max_items = 3;
 
     north_wall = false;
     south_wall = false;
