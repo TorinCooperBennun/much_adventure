@@ -43,6 +43,15 @@
 #define DOOR_WEST_LOCK  0x08
 
 
+enum direction
+{
+    DIR_NORTH,
+    DIR_EAST,
+    DIR_SOUTH,
+    DIR_WEST,
+};
+
+
 enum space_type
 {
     SPACE_EMPTY,
@@ -75,6 +84,8 @@ class space_obj
         void                    lock_doors(int door_lock_mask);
 
     private:
+        void                    set_default_values();
+
         space_type              type;
         std::vector<base_item>  items;
         int                     max_items;

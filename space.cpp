@@ -21,17 +21,38 @@
 #include "space.h"
 
 
+void space_obj::set_default_values()
+{
+    type = SPACE_EMPTY;
+    max_items = 25;
+
+    north_wall = false;
+    south_wall = false;
+    east_wall = false;
+    west_wall = false;
+
+    north_door = false;
+    south_door = false;
+    east_door = false;
+    west_door = false;
+
+    north_door_locked = false;
+    south_door_locked = false;
+    east_door_locked = false;
+    west_door_locked = false;
+}
+
+
 space_obj::space_obj(space_type type)
 {
+    this->set_default_values();
     this->type = type;
-    this->max_items = 25;
 }
 
 
 space_obj::space_obj()
 {
-    this->type = SPACE_EMPTY;
-    this->max_items = 25;
+    this->set_default_values();
 }
 
 
