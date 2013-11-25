@@ -14,7 +14,7 @@ $(TITLE): $(OBJS)
 		$(CPP) $(CPPFLAGS) -c -o $@ $<
 
 clean:
-		rm -f $(TITLE) $(OBJS)
+		rm -f $(TITLE) $(OBJS) wagnventures.exe
 
 main.o: main.h wagn.h command.h
 wagn.o: wagn.h item_base.h command.h space.h

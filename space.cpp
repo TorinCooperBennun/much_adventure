@@ -47,9 +47,44 @@ int space_obj::get_max_items()
 }
 
 
+
+
 space_type space_obj::get_type()
 {
     return type;
+}
+
+
+int space_obj::get_wall_mask()
+{
+    int bitmask = 0;
+    bitmask |= ((north_wall == true) * WALL_NORTH);
+    bitmask |= ((south_wall == true) * WALL_SOUTH);
+    bitmask |= ((east_wall == true) * WALL_EAST);
+    bitmask |= ((west_wall == true) * WALL_WEST);
+    return bitmask;
+}
+
+
+int space_obj::get_door_mask()
+{
+    int bitmask = 0;
+    bitmask |= ((north_door == true) * DOOR_NORTH);
+    bitmask |= ((south_door == true) * DOOR_SOUTH);
+    bitmask |= ((east_door == true) * DOOR_EAST);
+    bitmask |= ((west_door == true) * DOOR_WEST);
+    return bitmask;
+}
+
+
+int space_obj::get_door_lock_mask()
+{
+    int bitmask = 0;
+    bitmask |= ((north_door_locked == true) * DOOR_NORTH_LOCK);
+    bitmask |= ((south_door_locked == true) * DOOR_SOUTH_LOCK);
+    bitmask |= ((east_door_locked == true) * DOOR_EAST_LOCK);
+    bitmask |= ((west_door_locked == true) * DOOR_WEST_LOCK);
+    return bitmask;
 }
 
 
@@ -62,4 +97,55 @@ void space_obj::add_item(base_item item)
 void space_obj::add_items(std::vector<base_item> items)
 {
     this->items.insert(this->items.end(), items.begin(), items.end());
+}
+
+
+void space_obj::set_walls(int wall_mask)
+{
+    if (wall_mask & WALL_NORTH) {
+        north_wall = true;
+    }
+    if (wall_mask & WALL_SOUTH) {
+        south_wall = true;
+    }
+    if (wall_mask & WALL_EAST) {
+        east_wall = true;
+    }
+    if (wall_mask & WALL_WEST) {
+        west_wall = true;
+    }
+}
+
+
+void space_obj::set_doors(int door_mask)
+{
+    if (door_mask & DOOR_NORTH) {
+        north_door = true;
+    }
+    if (door_mask & DOOR_SOUTH) {
+        south_door = true;
+    }
+    if (door_mask & DOOR_EAST) {
+        east_door = true;
+    }
+    if (door_mask & DOOR_WEST) {
+        west_door = true;
+    }
+}
+
+
+void space_obj::lock_doors(int door_lock_mask)
+{
+    if (door_lock_mask & DOOR_NORTH_LOCK) {
+        north_door_locked = true;
+    }
+    if (door_lock_mask & DOOR_SOUTH_LOCK) {
+        south_door_locked = true;
+    }
+    if (door_lock_mask & DOOR_EAST_LOCK) {
+        east_door_locked = true;
+    }
+    if (door_lock_mask & DOOR_WEST_LOCK) {
+        west_door_locked = true;
+    }
 }

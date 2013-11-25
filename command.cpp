@@ -142,8 +142,8 @@ std::string command_obj::execute(wagn *wign)
                 valid = false;
             }
 
-            wign->coord_x = new_x;
-            wign->coord_y = new_y;
+            space_obj &new_space = wign->space_map[new_x][new_y];
+            
         }
     }
     /* quit */
