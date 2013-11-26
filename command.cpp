@@ -299,8 +299,13 @@ std::string command_obj::execute(wagn *wign)
                 for (unsigned i = 0; i < items.size(); i++) {
                     std::string name = items[i].get_name();
 
-                    if (i == items.size() - 1) {
-                        lookstr << " and ";
+                    if (i != 0) {
+                        if ((i == items.size() - 1)) {
+                            lookstr << " and ";
+                        }
+                        else {
+                            lookstr << ", ";
+                        }
                     }
 
                     char c = tolower(name[0]);
@@ -312,10 +317,7 @@ std::string command_obj::execute(wagn *wign)
                     }
                     lookstr << name;
                     
-                    if (i < items.size() - 2) {
-                        lookstr << ", ";
-                    }
-                    else if (i == items.size() - 1) {
+                    if (i == (items.size() - 1)) {
                         lookstr << ".";
                     }
                 }

@@ -1,5 +1,5 @@
 CPP = g++
-CPPFLAGS = -g -Wall -std=gnu++11 -O0
+CPPFLAGS = -g -Wall -std=gnu++11 -O0 -frtti
 LIBS =
 
 TITLE = wagnventures
