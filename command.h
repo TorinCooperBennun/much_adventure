@@ -48,6 +48,8 @@ class command_obj
     private:
         std::string              action;
         std::vector<std::string> parameters;
+
+        bool                     valid;
 };
 
 

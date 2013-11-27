@@ -23,13 +23,15 @@
 
 command_obj::command_obj(const std::string& original_str)
 {
+    valid = true;
+
     std::stringstream stream(original_str);
 
     action = "";
 
     while ((action == " ") or (action == "")) {
         if (!std::getline(stream, action, ' ')) {
-            action = "bullshitcommandlol";
+            valid = false;
         }
     }
     std::transform(action.begin(), action.end(), action.begin(), tolower);
@@ -56,7 +58,9 @@ command_obj::~command_obj()
 
 std::string command_obj::execute(wagn *wign)
 {
-    bool valid = true;
+    if (!valid) {
+        return "lel";
+    }
 
     /* help */
     if (action == "help") {
@@ -176,103 +180,103 @@ std::string command_obj::execute(wagn *wign)
                     wign->print("You hit the western border of the map!");
                 }
                 else {
-                    space_obj &current_space = wign->space_map[wign->coord_x][wign->coord_y],
-                              &next_space    = wign->space_map[new_x][new_y];
+//                    space_obj &current_space = wign->space_map[wign->coord_x][wign->coord_y],
+//                              &next_space    = wign->space_map[new_x][new_y];
 
-                    bool hit_wall = false,
-                         locked_door = false,
-                         door = false;
-                    
-                    /* check for walls, doors
-                     * on another note DON'T READ THIS CODE LOL I DON'T KNOW
-                     * WHAT I'M DOING ANY MORE */
+//                    bool hit_wall = false,
+//                         locked_door = false,
+//                         door = false;
+//                    
+//                    /* check for walls, doors
+//                     * on another note DON'T READ THIS CODE LOL I DON'T KNOW
+//                     * WHAT I'M DOING ANY MORE */
+//
+//                    if (dir == DIR_NORTH) {
+//                        if ((current_space.get_wall_mask() & WALL_NORTH) or (next_space.get_wall_mask() & WALL_SOUTH)) {
+//                            wign->print("You try to go north, but hit a wall.");
+//                            hit_wall = true;
+//                        }
+//                        if ((!hit_wall) and ((current_space.get_door_lock_mask() & DOOR_NORTH_LOCK) or (next_space.get_door_lock_mask() & DOOR_SOUTH_LOCK))) {
+//                            wign->print("You try to go north, but encounter a locked door.");
+//                            locked_door = true;
+//                        }
+//                        if ((!locked_door) and ((current_space.get_door_mask() & DOOR_NORTH) or (next_space.get_door_mask() & DOOR_SOUTH))) {
+//                            door = true;
+//                        }
+//                    }
+//                    else if (dir == DIR_EAST) {
+//                        if ((current_space.get_wall_mask() & WALL_EAST) or (next_space.get_wall_mask() & WALL_WEST)) {
+//                            wign->print("You try to go east, but hit a wall.");
+//                            hit_wall = true;
+//                        }
+//                        if ((!hit_wall) and ((current_space.get_door_lock_mask() & DOOR_EAST_LOCK) or (next_space.get_door_lock_mask() & DOOR_WEST_LOCK))) {
+//                            wign->print("You try to go east, but encounter a locked door.");
+//                            locked_door = true;
+//                        }
+//                        if ((!locked_door) and ((current_space.get_door_mask() & DOOR_EAST) or (next_space.get_door_mask() & DOOR_WEST))) {
+//                            door = true;
+//                        }
+//                    }
+//                    else if (dir == DIR_SOUTH) {
+//                        if ((current_space.get_wall_mask() & WALL_SOUTH) or (next_space.get_wall_mask() & WALL_NORTH)) {
+//                            wign->print("You try to go south, but hit a wall.");
+//                            hit_wall = true;
+//                        }
+//                        if ((!hit_wall) and ((current_space.get_door_lock_mask() & DOOR_SOUTH_LOCK) or (next_space.get_door_lock_mask() & DOOR_NORTH_LOCK))) {
+//                            wign->print("You try to go south, but encounter a locked door.");
+//                            locked_door = true;
+//                        }
+//                        if ((!locked_door) and ((current_space.get_door_mask() & DOOR_SOUTH) or (next_space.get_door_mask() & DOOR_NORTH))) {
+//                            door = true;
+//                        }
+//                    }
+//                    else if (dir == DIR_WEST) {
+//                        if ((current_space.get_wall_mask() & WALL_WEST) or (next_space.get_wall_mask() & WALL_EAST)) {
+//                            wign->print("You try to go west, but hit a wall.");
+//                            hit_wall = true;
+//                        }
+//                        if ((!hit_wall) and ((current_space.get_door_lock_mask() & DOOR_WEST_LOCK) or (next_space.get_door_lock_mask() & DOOR_EAST_LOCK))) {
+//                            wign->print("You try to go west, but encounter a locked door.");
+//                            locked_door = true;
+//                        }
+//                        if ((!locked_door) and ((current_space.get_door_mask() & DOOR_WEST) or (next_space.get_door_mask() & DOOR_EAST))) {
+//                            door = true;
+//                        }
+//                    }
+//
+//                    if (door) {
+//                        wign->print("You pass through an open door.");
+//                    }
+//
+//                    if (!hit_wall and !locked_door) {
+                    std::stringstream movestr;
+                    movestr << "You move ";
 
                     if (dir == DIR_NORTH) {
-                        if ((current_space.get_wall_mask() & WALL_NORTH) or (next_space.get_wall_mask() & WALL_SOUTH)) {
-                            wign->print("You try to go north, but hit a wall.");
-                            hit_wall = true;
-                        }
-                        if ((!hit_wall) and ((current_space.get_door_lock_mask() & DOOR_NORTH_LOCK) or (next_space.get_door_lock_mask() & DOOR_SOUTH_LOCK))) {
-                            wign->print("You try to go north, but encounter a locked door.");
-                            locked_door = true;
-                        }
-                        if ((!locked_door) and ((current_space.get_door_mask() & DOOR_NORTH) or (next_space.get_door_mask() & DOOR_SOUTH))) {
-                            door = true;
-                        }
+                        movestr << "north";
                     }
                     else if (dir == DIR_EAST) {
-                        if ((current_space.get_wall_mask() & WALL_EAST) or (next_space.get_wall_mask() & WALL_WEST)) {
-                            wign->print("You try to go east, but hit a wall.");
-                            hit_wall = true;
-                        }
-                        if ((!hit_wall) and ((current_space.get_door_lock_mask() & DOOR_EAST_LOCK) or (next_space.get_door_lock_mask() & DOOR_WEST_LOCK))) {
-                            wign->print("You try to go east, but encounter a locked door.");
-                            locked_door = true;
-                        }
-                        if ((!locked_door) and ((current_space.get_door_mask() & DOOR_EAST) or (next_space.get_door_mask() & DOOR_WEST))) {
-                            door = true;
-                        }
+                        movestr << "east";
                     }
                     else if (dir == DIR_SOUTH) {
-                        if ((current_space.get_wall_mask() & WALL_SOUTH) or (next_space.get_wall_mask() & WALL_NORTH)) {
-                            wign->print("You try to go south, but hit a wall.");
-                            hit_wall = true;
-                        }
-                        if ((!hit_wall) and ((current_space.get_door_lock_mask() & DOOR_SOUTH_LOCK) or (next_space.get_door_lock_mask() & DOOR_NORTH_LOCK))) {
-                            wign->print("You try to go south, but encounter a locked door.");
-                            locked_door = true;
-                        }
-                        if ((!locked_door) and ((current_space.get_door_mask() & DOOR_SOUTH) or (next_space.get_door_mask() & DOOR_NORTH))) {
-                            door = true;
-                        }
+                        movestr << "south";
                     }
                     else if (dir == DIR_WEST) {
-                        if ((current_space.get_wall_mask() & WALL_WEST) or (next_space.get_wall_mask() & WALL_EAST)) {
-                            wign->print("You try to go west, but hit a wall.");
-                            hit_wall = true;
-                        }
-                        if ((!hit_wall) and ((current_space.get_door_lock_mask() & DOOR_WEST_LOCK) or (next_space.get_door_lock_mask() & DOOR_EAST_LOCK))) {
-                            wign->print("You try to go west, but encounter a locked door.");
-                            locked_door = true;
-                        }
-                        if ((!locked_door) and ((current_space.get_door_mask() & DOOR_WEST) or (next_space.get_door_mask() & DOOR_EAST))) {
-                            door = true;
-                        }
+                        movestr << "west";
                     }
 
-                    if (door) {
-                        wign->print("You pass through an open door.");
-                    }
+//                    if (door) {
+//                        movestr << " and pass through an open door.";
+//                    }
+//                    else {
+                    movestr << ".";
+//                    }
 
-                    if (!hit_wall and !locked_door) {
-                        std::stringstream movestr;
-                        movestr << "You move ";
+                    wign->print(movestr.str());
 
-                        if (dir == DIR_NORTH) {
-                            movestr << "north";
-                        }
-                        else if (dir == DIR_EAST) {
-                            movestr << "east";
-                        }
-                        else if (dir == DIR_SOUTH) {
-                            movestr << "south";
-                        }
-                        else if (dir == DIR_WEST) {
-                            movestr << "west";
-                        }
-
-                        if (door) {
-                            movestr << " and pass through an open door.";
-                        }
-                        else {
-                            movestr << ".";
-                        }
-
-                        wign->print(movestr.str());
-
-                        command_obj look_cmd("look");
-                        look_cmd.execute(wign);
-                    }
+                    command_obj look_cmd("look");
+                    look_cmd.execute(wign);
+//                    }
                 }
             }
         }

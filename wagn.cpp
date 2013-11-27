@@ -75,7 +75,7 @@ void wagn::generate_spaces()
      * I honestly don't know any more. */
     space_map = std::vector< std::vector<space_obj> > (
         map_width, std::vector<space_obj> (
-            map_height, space_obj(SPACE_ROOM)
+            map_height, space_obj()
         )
     );
 }
