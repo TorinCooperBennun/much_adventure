@@ -41,9 +41,9 @@ void space_obj::set_default_values()
 //    east_door_locked = false;
 //    west_door_locked = false;
 
-    items.push_back(base_item());
-    items.push_back(base_item());
-    items.push_back(base_item());
+    base_item it;
+
+    items.push_back(it);
 }
 
 
@@ -70,8 +70,6 @@ int space_obj::get_max_items()
 {
     return max_items;
 }
-
-
 
 
 space_type space_obj::get_type()
@@ -174,3 +172,23 @@ void space_obj::add_items(std::vector<base_item> items)
 //        west_door_locked = true;
 //    }
 //}
+
+
+void wall_obj::set_strength(int val)
+{
+    strength = val;
+}
+
+
+int wall_obj::get_strength()
+{
+    return strength;
+}
+
+
+void wall_obj::set_default_values()
+{
+    type = SPACE_WALL;
+    max_items = 1;
+    strength = 100;
+}

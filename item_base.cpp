@@ -24,7 +24,7 @@
 base_item::base_item()
 {
     type = NULL_TYPE;
-    name = "FAGGIT";
+    name = std::string("test");
     actions.clear();
 }
 

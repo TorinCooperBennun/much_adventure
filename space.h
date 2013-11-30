@@ -84,8 +84,8 @@ class space_obj
 //        void                    set_doors(int door_mask);
 //        void                    lock_doors(int door_lock_mask);
 
-    private:
-        void                    set_default_values();
+    protected:
+        virtual void            set_default_values();
 
         space_type              type;
         std::vector<base_item>  items;
@@ -105,6 +105,19 @@ class space_obj
 //                                south_door_locked,
 //                                east_door_locked,
 //                                west_door_locked;
+};
+
+
+class wall_obj : public space_obj
+{
+    public:
+        void set_strength(int val);
+        int  get_strength();
+
+    private:
+        void set_default_values();
+
+        int  strength;
 };
 
 

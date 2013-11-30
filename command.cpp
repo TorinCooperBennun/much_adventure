@@ -301,7 +301,9 @@ std::string command_obj::execute(wagn *wign)
             }
             else {
                 for (unsigned i = 0; i < items.size(); i++) {
-                    std::string name = items[i].get_name();
+                    base_item& it = items[i];
+                    std::string name = it.get_name();
+//                    std::string name = items[i].get_name();
 
                     if (i != 0) {
                         if ((i == items.size() - 1)) {
