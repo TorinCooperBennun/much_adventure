@@ -24,24 +24,49 @@
 command_obj::command_obj(const std::string& original_str)
 {
     valid = true;
-
-    std::stringstream stream(original_str);
-
     action = "";
 
-    while ((action == " ") or (action == "")) {
-        if (!std::getline(stream, action, ' ')) {
-            valid = false;
+    std::vector<std::string> tokens = split_by_whitespace(original_str);
+    if (tokens.size() == 0) {
+        valid = false;
+    }
+    else {
+        action = tokens[0];
+        std::transform(action.begin(), action.end(), action.begin(), tolower);
+        for (unsigned i = 1; i < tokens.size(); i++) {
+            parameters.push_back(tokens[i]);
         }
     }
-    std::transform(action.begin(), action.end(), action.begin(), tolower);
 
-    std::string token;
-    while (std::getline(stream, token, ' ')) {
-        if ((token != "") and (token != " ")) {
-            parameters.push_back(token);
-        }
-    }
+//    std::stringstream stream(original_str);
+//
+//    auto wspace_check = [] (std::string &str) {
+//        if (str.size() == 0) {
+//            return true;
+//        }
+//        for (unsigned i = 0; i < str.size(); i++) {
+//            if (isspace(str[i])) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    };
+//
+//    while (wspace_check(action)) {
+//        if (!std::getline(stream, action, ' ')) {
+//            valid = false;
+//            break;
+//        }
+//    }
+//    
+//    std::transform(action.begin(), action.end(), action.begin(), tolower);
+//
+//    std::string token;
+//    while (std::getline(stream, token, ' ')) {
+//        if ((token != "") and (token != " ")) {
+//            parameters.push_back(token);
+//        }
+//    }
 }
 
 
@@ -59,6 +84,7 @@ command_obj::~command_obj()
 std::string command_obj::execute(wagn *wign)
 {
     if (!valid) {
+//        wign->print("Invalid command. Try 'help'.");
         return "lel";
     }
 
@@ -180,75 +206,6 @@ std::string command_obj::execute(wagn *wign)
                     wign->print("You hit the western border of the map!");
                 }
                 else {
-//                    space_obj &current_space = wign->space_map[wign->coord_x][wign->coord_y],
-//                              &next_space    = wign->space_map[new_x][new_y];
-
-//                    bool hit_wall = false,
-//                         locked_door = false,
-//                         door = false;
-//                    
-//                    /* check for walls, doors
-//                     * on another note DON'T READ THIS CODE LOL I DON'T KNOW
-//                     * WHAT I'M DOING ANY MORE */
-//
-//                    if (dir == DIR_NORTH) {
-//                        if ((current_space.get_wall_mask() & WALL_NORTH) or (next_space.get_wall_mask() & WALL_SOUTH)) {
-//                            wign->print("You try to go north, but hit a wall.");
-//                            hit_wall = true;
-//                        }
-//                        if ((!hit_wall) and ((current_space.get_door_lock_mask() & DOOR_NORTH_LOCK) or (next_space.get_door_lock_mask() & DOOR_SOUTH_LOCK))) {
-//                            wign->print("You try to go north, but encounter a locked door.");
-//                            locked_door = true;
-//                        }
-//                        if ((!locked_door) and ((current_space.get_door_mask() & DOOR_NORTH) or (next_space.get_door_mask() & DOOR_SOUTH))) {
-//                            door = true;
-//                        }
-//                    }
-//                    else if (dir == DIR_EAST) {
-//                        if ((current_space.get_wall_mask() & WALL_EAST) or (next_space.get_wall_mask() & WALL_WEST)) {
-//                            wign->print("You try to go east, but hit a wall.");
-//                            hit_wall = true;
-//                        }
-//                        if ((!hit_wall) and ((current_space.get_door_lock_mask() & DOOR_EAST_LOCK) or (next_space.get_door_lock_mask() & DOOR_WEST_LOCK))) {
-//                            wign->print("You try to go east, but encounter a locked door.");
-//                            locked_door = true;
-//                        }
-//                        if ((!locked_door) and ((current_space.get_door_mask() & DOOR_EAST) or (next_space.get_door_mask() & DOOR_WEST))) {
-//                            door = true;
-//                        }
-//                    }
-//                    else if (dir == DIR_SOUTH) {
-//                        if ((current_space.get_wall_mask() & WALL_SOUTH) or (next_space.get_wall_mask() & WALL_NORTH)) {
-//                            wign->print("You try to go south, but hit a wall.");
-//                            hit_wall = true;
-//                        }
-//                        if ((!hit_wall) and ((current_space.get_door_lock_mask() & DOOR_SOUTH_LOCK) or (next_space.get_door_lock_mask() & DOOR_NORTH_LOCK))) {
-//                            wign->print("You try to go south, but encounter a locked door.");
-//                            locked_door = true;
-//                        }
-//                        if ((!locked_door) and ((current_space.get_door_mask() & DOOR_SOUTH) or (next_space.get_door_mask() & DOOR_NORTH))) {
-//                            door = true;
-//                        }
-//                    }
-//                    else if (dir == DIR_WEST) {
-//                        if ((current_space.get_wall_mask() & WALL_WEST) or (next_space.get_wall_mask() & WALL_EAST)) {
-//                            wign->print("You try to go west, but hit a wall.");
-//                            hit_wall = true;
-//                        }
-//                        if ((!hit_wall) and ((current_space.get_door_lock_mask() & DOOR_WEST_LOCK) or (next_space.get_door_lock_mask() & DOOR_EAST_LOCK))) {
-//                            wign->print("You try to go west, but encounter a locked door.");
-//                            locked_door = true;
-//                        }
-//                        if ((!locked_door) and ((current_space.get_door_mask() & DOOR_WEST) or (next_space.get_door_mask() & DOOR_EAST))) {
-//                            door = true;
-//                        }
-//                    }
-//
-//                    if (door) {
-//                        wign->print("You pass through an open door.");
-//                    }
-//
-//                    if (!hit_wall and !locked_door) {
                     std::stringstream movestr;
                     movestr << "You move ";
 
@@ -265,18 +222,12 @@ std::string command_obj::execute(wagn *wign)
                         movestr << "west";
                     }
 
-//                    if (door) {
-//                        movestr << " and pass through an open door.";
-//                    }
-//                    else {
                     movestr << ".";
-//                    }
 
                     wign->print(movestr.str());
 
                     command_obj look_cmd("look");
                     look_cmd.execute(wign);
-//                    }
                 }
             }
         }
@@ -303,7 +254,6 @@ std::string command_obj::execute(wagn *wign)
                 for (unsigned i = 0; i < items.size(); i++) {
                     base_item& it = items[i];
                     std::string name = it.get_name();
-//                    std::string name = items[i].get_name();
 
                     if (i != 0) {
                         if ((i == items.size() - 1)) {
@@ -351,5 +301,23 @@ std::string command_obj::execute(wagn *wign)
     }
     else {
         return "lel";
+    }
+}
+
+
+std::vector<std::string> command_obj::split_by_whitespace(std::string str)
+{
+    std::stringstream ss(str);
+    std::string t = "";
+    std::vector<std::string> a;
+
+    while (1) {
+        ss >> std::ws >> t;
+        if (!ss.fail()) {
+            a.push_back(t);
+        }
+        else {
+            return a;
+        }
     }
 }

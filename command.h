@@ -18,7 +18,6 @@
  */
 
 
-//#if (!defined COMMAND_H) && (!defined WAGN_H_COMMAND_OBJ_DECLARED)
 #ifndef COMMAND_H
 #define COMMAND_H
 
@@ -46,6 +45,8 @@ class command_obj
         std::string              execute(wagn *wign);
 
     private:
+        std::vector<std::string> split_by_whitespace(std::string str);
+
         std::string              action;
         std::vector<std::string> parameters;
 
