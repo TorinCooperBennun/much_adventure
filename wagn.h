@@ -33,6 +33,8 @@ class command_obj;
 #include <iostream>
 #include <vector>
 #include <string>
+#include <chrono>
+#include <random>
 
 
 class wagn
@@ -41,25 +43,31 @@ class wagn
         wagn();
         ~wagn();
 
-        void                                  print_info();
-        void                                  print(std::string str);
-        command_obj                           get_input();
+        void                                   print_info();
+        void                                   print(std::string str);
+        command_obj                            get_input();
 
-        void                                  generate_spaces();
-        bool                                  is_closed();
+        void                                   generate_spaces();
+        bool                                   is_closed();
 
     private:
-        std::vector<base_item>                inventory;
-        std::vector<command_obj>              history;
-        std::vector< std::vector<space_obj> > space_map;
+        void                                   set_string_vectors();
+        std::string&                           pick_str_from_vect(std::vector<std::string>& vect);
 
-        int                                   map_width,
-                                              map_height;
+        std::vector<base_item *>               inventory;
+        std::vector<command_obj>               history;
+        std::vector< std::vector<space_obj*> > space_map;
 
-        bool                                  closed;
+        int                                    map_width,
+                                               map_height;
 
-        int                                   coord_x,
-                                              coord_y;
+        bool                                   closed;
+
+        int                                    coord_x,
+                                               coord_y;
+
+        std::vector<std::string>               empty_room_strings,
+                                               items_seen_strings;
 
         friend class command_obj;
 };

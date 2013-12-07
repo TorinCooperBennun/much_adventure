@@ -50,13 +50,17 @@ class space_obj
 {
     public:
         space_obj();
+        space_obj(bool empty);
+        ~space_obj();
 
         std::vector<base_item>& get_items();
         int                     get_max_items();
         space_type              get_type();
+        std::string&            get_lookstr();
 
         void                    add_item(base_item item);
         void                    add_items(std::vector<base_item> items);
+        void                    set_lookstr(const std::string &str);
 
     protected:
         virtual void            set_default_values();
@@ -64,12 +68,16 @@ class space_obj
         space_type              type;
         std::vector<base_item>  items;
         int                     max_items;
+        std::string             lookstr;
 };
 
 
 class wall_obj : public space_obj
 {
     public:
+        wall_obj();
+        ~wall_obj();
+
         void set_strength(int val);
         int  get_strength();
 

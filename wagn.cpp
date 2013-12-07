@@ -33,8 +33,12 @@ wagn::wagn()
     map_width = 101;
     map_height = 101;
     closed = false;
-    coord_x = map_width / 2;
-    coord_y = map_height / 2;
+    coord_x = 51;
+    coord_y = 51;
+//    coord_x = map_width / 2;
+//    coord_y = map_height / 2;
+
+    set_string_vectors();
 }
 
 
@@ -71,17 +75,76 @@ command_obj wagn::get_input()
 
 void wagn::generate_spaces()
 {
-    /* this is the biggest hack known to man.
-     * I honestly don't know any more. */
-    space_map = std::vector< std::vector<space_obj> > (
-        map_width, std::vector<space_obj> (
-            map_height, space_obj()
+    /* generate all blanks */
+    space_map = std::vector< std::vector<space_obj*> > (
+        map_width, std::vector<space_obj*> (
+            map_height, NULL
         )
     );
+    for (int y = 0; y < map_height; y++) {
+        for (int x = 0; x < map_width; x++) {
+            space_map[y][x] = new space_obj(true);
+        }
+    }
+
+    /* generate 5x5 walled square in centre */
+    int x_west  = map_width / 2 - 2,
+        x_east  = map_width / 2 + 2,
+        y_north = map_height / 2 + 2,
+        y_south = map_height / 2 - 2;
+
+    x_west--; x_east--; y_north--; y_south--;
+
+    for (int y = y_south; y <= y_north; y++) {
+        for (int x = x_west; x <= x_east; x++) {
+            delete space_map[y][x];
+            space_map[y][x] = new space_obj();
+        }
+    }
+
+    /* walls */
+    for (int x = x_west; x <= x_east; x++) {
+        delete space_map[y_north + 1][x];
+        delete space_map[y_south - 1][x];
+        space_map[y_north + 1][x] = new wall_obj();
+        space_map[y_south - 1][x] = new wall_obj();
+    }
+    for (int y = y_south - 1; y <= y_north + 1; y++) {
+        delete space_map[y][x_east - 1];
+        delete space_map[y][x_west + 1];
+        space_map[y][x_east - 1] = new wall_obj();
+        space_map[y][x_west - 1] = new wall_obj();
+    }
 }
 
 
 bool wagn::is_closed()
 {
     return closed;
+}
+
+
+void wagn::set_string_vectors()
+{
+    empty_room_strings = {
+        "The space around you is empty.",
+        "There are no items immediately near you.",
+        "You glance around, but spot nothing interesting.",
+        "You appear to be in an empty space.",
+    };
+
+    items_seen_strings = {
+        "You glance around the immediate area and spot ",
+        "In front of you, you see ",
+        "Behold! You see ",
+    };
+}
+
+
+std::string& wagn::pick_str_from_vect(std::vector<std::string>& vect)
+{
+    unsigned seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+    std::default_random_engine engine(seed);
+    std::uniform_int_distribution<unsigned> dist(0, vect.size() - 1);
+    return vect[dist(engine)];
 }

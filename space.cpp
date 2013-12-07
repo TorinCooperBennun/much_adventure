@@ -25,16 +25,33 @@ void space_obj::set_default_values()
 {
     type = SPACE_ROOM;
     max_items = 3;
-
+    lookstr = "";
     base_item it;
-
     items.push_back(it);
+}
+
+
+space_obj::~space_obj()
+{
 }
 
 
 space_obj::space_obj()
 {
     this->set_default_values();
+}
+
+
+space_obj::space_obj(bool empty)
+{
+    if (!empty) {
+        this->set_default_values();
+    }
+    else {
+        type = SPACE_EMPTY;
+        max_items = 0;
+        lookstr = "";
+    }
 }
 
 
@@ -56,6 +73,12 @@ space_type space_obj::get_type()
 }
 
 
+std::string& space_obj::get_lookstr()
+{
+    return lookstr;
+}
+
+
 void space_obj::add_item(base_item item)
 {
     items.push_back(item);
@@ -65,6 +88,23 @@ void space_obj::add_item(base_item item)
 void space_obj::add_items(std::vector<base_item> items)
 {
     this->items.insert(this->items.end(), items.begin(), items.end());
+}
+
+
+void space_obj::set_lookstr(const std::string &str)
+{
+    lookstr = str;
+}
+
+
+wall_obj::~wall_obj()
+{
+}
+
+
+wall_obj::wall_obj()
+{
+    this->set_default_values();
 }
 
 
@@ -85,4 +125,5 @@ void wall_obj::set_default_values()
     type = SPACE_WALL;
     max_items = 1;
     strength = 100;
+    lookstr = "";
 }

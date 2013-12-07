@@ -207,22 +207,58 @@ std::string command_obj::execute(wagn *wign)
                 }
                 else {
                     std::stringstream movestr;
-                    movestr << "You move ";
 
-                    if (dir == DIR_NORTH) {
-                        movestr << "north";
-                    }
-                    else if (dir == DIR_EAST) {
-                        movestr << "east";
-                    }
-                    else if (dir == DIR_SOUTH) {
-                        movestr << "south";
-                    }
-                    else if (dir == DIR_WEST) {
-                        movestr << "west";
-                    }
+                    space_obj *nspace = wign->space_map[wign->coord_x][wign->coord_y];
+                    space_type stype = nspace->get_type();
 
-                    movestr << ".";
+                    switch (stype) {
+                        case SPACE_EMPTY:
+                            movestr << "You cannot move into the void.";
+                            break;
+
+                        case SPACE_ROOM:
+                        case SPACE_CORRIDOR:
+                            movestr << "You move ";
+                            if (dir == DIR_NORTH) {
+                                movestr << "north";
+                            }
+                            else if (dir == DIR_EAST) {
+                                movestr << "east";
+                            }
+                            else if (dir == DIR_SOUTH) {
+                                movestr << "south";
+                            }
+                            else if (dir == DIR_WEST) {
+                                movestr << "west";
+                            }
+                            wign->coord_x = new_x;
+                            wign->coord_y = new_y;
+                            movestr << ".";
+                            break;
+
+                        case SPACE_WALL:
+                            {
+                                wall_obj *wall = dynamic_cast<wall_obj*>(nspace);
+                                movestr << "You attempt to move ";
+                                if (dir == DIR_NORTH) {
+                                    movestr << "north";
+                                }
+                                else if (dir == DIR_EAST) {
+                                    movestr << "east";
+                                }
+                                else if (dir == DIR_SOUTH) {
+                                    movestr << "south";
+                                }
+                                else if (dir == DIR_WEST) {
+                                    movestr << "west";
+                                }
+                                movestr << ", but hit a wall. You knock against it, and estimate its strength to be about " << wall->get_strength() << ".";
+                                break;
+                            }
+                        case SPACE_DOOR:
+                            movestr << "You hit a locked door.";
+                            break;
+                    }
 
                     wign->print(movestr.str());
 
@@ -241,42 +277,68 @@ std::string command_obj::execute(wagn *wign)
             valid = false;
         }
         else {
-            space_obj &space = wign->space_map[wign->coord_x][wign->coord_y];
-            std::vector<base_item> &items = space.get_items();
+            space_obj *space = wign->space_map[wign->coord_x][wign->coord_y];
+            std::vector<base_item> &items = space->get_items();
+
+            bool look_for_items;
+
+            space_type stype = space->get_type();
+            switch (stype) {
+                case SPACE_EMPTY:
+                case SPACE_ROOM:
+                case SPACE_CORRIDOR:
+                    look_for_items = true;
+                    break;
+                case SPACE_DOOR:
+                case SPACE_WALL:
+                    look_for_items = false;
+                    break;
+            }
 
             std::stringstream lookstr;
-            lookstr << "You look around and see ";
 
-            if (items.size() == 0) {
-                lookstr << "basically nothing.";
+            std::string& space_lookstr = space->get_lookstr();
+            if (space_lookstr.size() > 0) {
+                lookstr << space->get_lookstr() << ". ";
             }
-            else {
-                for (unsigned i = 0; i < items.size(); i++) {
-                    base_item& it = items[i];
-                    std::string name = it.get_name();
+//            lookstr << "You look around and see ";
 
-                    if (i != 0) {
-                        if ((i == items.size() - 1)) {
-                            lookstr << " and ";
+            if (look_for_items) {
+                if (items.size() == 0) {
+                    lookstr << wign->pick_str_from_vect(wign->empty_room_strings);
+                }
+                else {
+                    lookstr << wign->pick_str_from_vect(wign->items_seen_strings);
+                    for (unsigned i = 0; i < items.size(); i++) {
+                        base_item& it = items[i];
+                        std::string name = it.get_name();
+
+                        if (i != 0) {
+                            if ((i == items.size() - 1)) {
+                                lookstr << " and ";
+                            }
+                            else {
+                                lookstr << ", ";
+                            }
+                        }
+
+                        char c = tolower(name[0]);
+                        if ((c == 'a') or (c == 'e') or (c == 'i') or (c == 'o') or (c == 'u')) {
+                            lookstr << "an ";
                         }
                         else {
-                            lookstr << ", ";
+                            lookstr << "a ";
+                        }
+                        lookstr << name;
+                        
+                        if (i == (items.size() - 1)) {
+                            lookstr << ".";
                         }
                     }
-
-                    char c = tolower(name[0]);
-                    if ((c == 'a') or (c == 'e') or (c == 'i') or (c == 'o') or (c == 'u')) {
-                        lookstr << "an ";
-                    }
-                    else {
-                        lookstr << "a ";
-                    }
-                    lookstr << name;
-                    
-                    if (i == (items.size() - 1)) {
-                        lookstr << ".";
-                    }
                 }
+            }
+            else {
+                lookstr << "Move along.";
             }
 
             wign->print(lookstr.str());
