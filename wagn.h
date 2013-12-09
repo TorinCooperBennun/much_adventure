@@ -35,6 +35,7 @@ class command_obj;
 #include <string>
 #include <chrono>
 #include <random>
+#include <fstream>
 
 
 class wagn

@@ -46,6 +46,26 @@ enum space_type
 };
 
 
+class coordinate
+{
+    public:
+        coordinate()             : _x(0), _y(0) {}
+        coordinate(int x, int y) : _x(x), _y(y) {}
+        ~coordinate()                           {}
+
+        void set_x(int x)         { _x = x; }
+        void set_y(int y)         { _y = y; }
+        void set_xy(int x, int y) { _x = x; _y = y; }
+
+        int  get_x() { return _x; }
+        int  get_y() { return _y; }
+
+    private:
+        int _x,
+            _y;
+};
+
+
 class space_obj
 {
     public:
@@ -86,6 +106,9 @@ class wall_obj : public space_obj
 
         int  strength;
 };
+
+
+typedef std::vector< std::vector<space_obj> > space_vect;
 
 
 #endif

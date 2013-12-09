@@ -115,6 +115,26 @@ void wagn::generate_spaces()
         space_map[y][x_east - 1] = new wall_obj();
         space_map[y][x_west - 1] = new wall_obj();
     }
+
+    std::ofstream f("map.txt");
+    if (f.is_open()) {
+        for (int y = map_height - 1; y >= 0; y--) {
+            std::stringstream s;
+            s << y;
+            for (int i = 0; i < 3 - s.str().size(); i++) {
+                f << ' ';
+            }
+            f << y << ' ';
+            for (int x = 0; x < map_width; x++) {
+                char c = (space_map[y][x]->get_type() == SPACE_EMPTY) ? '0' : '1';
+                if (x == 51 and x == y) {
+                    c = 'p';
+                }
+                f << c;
+            }
+            f << "\r\n";
+        }
+    }
 }
 
 
