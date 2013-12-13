@@ -21,6 +21,14 @@
 #include "wagn.h"
 
 
+/* TODO
+ * replace coord_x and coord_y in all files with
+ * a coordinate class instance
+ *
+ * fix the 'move' command (detects walls very badly)
+ */
+
+
 wagn::wagn()
 {
     std::stringstream notices;
@@ -30,13 +38,12 @@ wagn::wagn()
             << "Type \'help\' for a list of commands.\r\n";
     this->print(notices.str());
 
-    map_width = 101;
-    map_height = 101;
+    map_width = 100;
+    map_height = 100;
     closed = false;
-    coord_x = 51;
-    coord_y = 51;
-//    coord_x = map_width / 2;
-//    coord_y = map_height / 2;
+    p_pos = coordinate((map_width - 1) / 2, (map_height - 1) / 2);
+//    coord_x = (map_width - 1) / 2;
+//    coord_y = (map_height - 1) / 2;
 
     set_string_vectors();
 }
@@ -49,9 +56,9 @@ wagn::~wagn()
 
 void wagn::print_info()
 {
-    std::cout << "X: " << coord_x << "\r\n"
-              << "Y: " << coord_y << "\r\n"
-              << "Items in inventory: " << inventory.size() << "\r\n"
+    std::cout << "X: " << p_pos.get_x() << "\r\n"
+              << "Y: " << p_pos.get_y() << "\r\n"
+              << "No. items in inventory: " << inventory.size() << "\r\n"
               << "\r\n"
               << "Map: (not yet)\r\n";
 }
@@ -75,59 +82,92 @@ command_obj wagn::get_input()
 
 void wagn::generate_spaces()
 {
-    /* generate all blanks */
-    space_map = std::vector< std::vector<space_obj*> > (
-        map_width, std::vector<space_obj*> (
-            map_height, NULL
-        )
-    );
-    for (int y = 0; y < map_height; y++) {
-        for (int x = 0; x < map_width; x++) {
-            space_map[y][x] = new space_obj(true);
-        }
-    }
+//    /* generate all blanks */
+//    space_map = std::vector< std::vector<space_obj*> > (
+//        map_width, std::vector<space_obj*> (
+//            map_height, NULL
+//        )
+//    );
+//    for (int y = 0; y < map_height; y++) {
+//        for (int x = 0; x < map_width; x++) {
+//            space_map[y][x] = new space_obj(true);
+//        }
+//    }
+//
+//    /* generate 5x5 walled square in centre */
+//    int x_west  = map_width / 2 - 2,
+//        x_east  = map_width / 2 + 2,
+//        y_north = map_height / 2 + 2,
+//        y_south = map_height / 2 - 2;
+//
+//    x_west--; x_east--; y_north--; y_south--;
+//
+//    for (int y = y_south; y <= y_north; y++) {
+//        for (int x = x_west; x <= x_east; x++) {
+//            delete space_map[y][x];
+//            space_map[y][x] = new space_obj();
+//        }
+//    }
+//
+//    /* walls */
+//    for (int x = x_west; x <= x_east; x++) {
+//        delete space_map[y_north + 1][x];
+//        delete space_map[y_south - 1][x];
+//        space_map[y_north + 1][x] = new wall_obj();
+//        space_map[y_south - 1][x] = new wall_obj();
+//    }
+//    for (int y = y_south - 1; y <= y_north + 1; y++) {
+//        delete space_map[y][x_east - 1];
+//        delete space_map[y][x_west + 1];
+//        space_map[y][x_east - 1] = new wall_obj();
+//        space_map[y][x_west - 1] = new wall_obj();
+//    }
 
-    /* generate 5x5 walled square in centre */
-    int x_west  = map_width / 2 - 2,
-        x_east  = map_width / 2 + 2,
-        y_north = map_height / 2 + 2,
-        y_south = map_height / 2 - 2;
+//    space_map.clear();
+//
+//    for (int i = 0; i < map_height; i++) {
+//        space_map.push_back(std::vector<space_obj*>());
+//        for (int j = 0; j < map_width; j++) {
+//            space_obj *sp = new space_obj(true);
+//            space_map[i].push_back(sp);
+//        }
+//    }
 
-    x_west--; x_east--; y_north--; y_south--;
+    fill_map(space_map, coordinate(map_width, map_height), SPACE_EMPTY);
 
-    for (int y = y_south; y <= y_north; y++) {
-        for (int x = x_west; x <= x_east; x++) {
-            delete space_map[y][x];
-            space_map[y][x] = new space_obj();
-        }
-    }
-
-    /* walls */
-    for (int x = x_west; x <= x_east; x++) {
-        delete space_map[y_north + 1][x];
-        delete space_map[y_south - 1][x];
-        space_map[y_north + 1][x] = new wall_obj();
-        space_map[y_south - 1][x] = new wall_obj();
-    }
-    for (int y = y_south - 1; y <= y_north + 1; y++) {
-        delete space_map[y][x_east - 1];
-        delete space_map[y][x_west + 1];
-        space_map[y][x_east - 1] = new wall_obj();
-        space_map[y][x_west - 1] = new wall_obj();
-    }
+    create_walled_room(space_map, coordinate(2, 2), coordinate(8, 8),
+            true, 50, NULL);
+    
+    p_pos.set_xy(5, 5);
+//    coord_x = 5;
+//    coord_y = 5;
 
     std::ofstream f("map.txt");
     if (f.is_open()) {
         for (int y = map_height - 1; y >= 0; y--) {
             std::stringstream s;
             s << y;
-            for (int i = 0; i < 3 - s.str().size(); i++) {
+            for (unsigned i = 0; i < 3 - s.str().size(); i++) {
                 f << ' ';
             }
             f << y << ' ';
             for (int x = 0; x < map_width; x++) {
-                char c = (space_map[y][x]->get_type() == SPACE_EMPTY) ? '0' : '1';
-                if (x == 51 and x == y) {
+                char c;
+                switch (space_map[y][x]->get_type()) {
+                    case SPACE_EMPTY:
+                        c = '.';
+                        break;
+                    case SPACE_ROOM:
+                        c = '0';
+                        break;
+                    case SPACE_WALL:
+                        c = 'W';
+                        break;
+                    default:
+                        c = '?';
+                        break;
+                }
+                if (x == p_pos.get_x() and y == p_pos.get_y()) {
                     c = 'p';
                 }
                 f << c;

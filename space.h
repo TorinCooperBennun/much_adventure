@@ -71,7 +71,7 @@ class space_obj
     public:
         space_obj();
         space_obj(bool empty);
-        ~space_obj();
+        virtual ~space_obj();
 
         std::vector<base_item>& get_items();
         int                     get_max_items();
@@ -108,7 +108,7 @@ class wall_obj : public space_obj
 };
 
 
-typedef std::vector< std::vector<space_obj> > space_vect;
+typedef std::vector< std::vector<space_obj*> > space_vect;
 
 
 #endif

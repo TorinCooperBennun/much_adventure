@@ -157,15 +157,18 @@ std::string command_obj::execute(wagn *wign)
             valid = false;
         }
         else {
-            int new_x = wign->coord_x,
-                new_y = wign->coord_y;
+            int new_x = wign->p_pos.get_x(),
+                new_y = wign->p_pos.get_y();
 
-            /* little hack to set parameters lowercase */
-            std::for_each(parameters.begin(), parameters.end(),
-                    [](std::string& str) {
-                        std::transform(str.begin(), str.end(), str.begin(), tolower);
-                    }
-            );
+            for (int i = 0; i < parameters.size(); i++) {
+                std::transform(parameters[i].begin(), parameters[i].end(), parameters[i].begin(), tolower);
+            }
+//            /* little hack to set parameters lowercase */
+//            std::for_each(parameters.begin(), parameters.end(),
+//                    [](std::string& str) {
+//                        std::transform(str.begin(), str.end(), str.begin(), tolower);
+//                    }
+//            );
 
             direction dir;
 
@@ -208,8 +211,10 @@ std::string command_obj::execute(wagn *wign)
                 else {
                     std::stringstream movestr;
 
-                    space_obj *nspace = wign->space_map[wign->coord_x][wign->coord_y];
+                    space_obj *nspace = wign->space_map[new_y][new_x];
                     space_type stype = nspace->get_type();
+
+                    bool wall_hit = false;
 
                     switch (stype) {
                         case SPACE_EMPTY:
@@ -231,13 +236,15 @@ std::string command_obj::execute(wagn *wign)
                             else if (dir == DIR_WEST) {
                                 movestr << "west";
                             }
-                            wign->coord_x = new_x;
-                            wign->coord_y = new_y;
+                            wign->p_pos.set_xy(new_x, new_y);
+//                            wign->coord_x = new_x;
+//                            wign->coord_y = new_y;
                             movestr << ".";
                             break;
 
                         case SPACE_WALL:
                             {
+                                wall_hit = true;
                                 wall_obj *wall = dynamic_cast<wall_obj*>(nspace);
                                 movestr << "You attempt to move ";
                                 if (dir == DIR_NORTH) {
@@ -262,8 +269,10 @@ std::string command_obj::execute(wagn *wign)
 
                     wign->print(movestr.str());
 
-                    command_obj look_cmd("look");
-                    look_cmd.execute(wign);
+                    if (!wall_hit) {
+                        command_obj look_cmd("look");
+                        look_cmd.execute(wign);
+                    }
                 }
             }
         }
@@ -277,7 +286,7 @@ std::string command_obj::execute(wagn *wign)
             valid = false;
         }
         else {
-            space_obj *space = wign->space_map[wign->coord_x][wign->coord_y];
+            space_obj *space = wign->space_map[wign->p_pos.get_y()][wign->p_pos.get_x()];
             std::vector<base_item> &items = space->get_items();
 
             bool look_for_items;

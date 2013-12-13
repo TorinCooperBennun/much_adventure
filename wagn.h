@@ -29,6 +29,7 @@ class command_obj;
 #include "item_base.h"
 #include "command.h"
 #include "space.h"
+#include "generation.h"
 
 #include <iostream>
 #include <vector>
@@ -64,8 +65,9 @@ class wagn
 
         bool                                   closed;
 
-        int                                    coord_x,
-                                               coord_y;
+        coordinate                             p_pos;
+//        int                                    coord_x,
+//                                               coord_y;
 
         std::vector<std::string>               empty_room_strings,
                                                items_seen_strings;

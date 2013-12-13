@@ -1,0 +1,11 @@
+rooms:
+    start_room:
+        type: room
+        size: [1,1]
+        items: [torch, journal_start]
+        walled: true
+        string: "You wake up to find yourself in a small, drab room. There is a tiny barred window near the top of the wall on your left, through which you can see the Sun. It appears to be quite high in the sky. Opposite the windowed wall, there is a door, ajar."
+
+player:
+    starting_pos: start_room
+    starting_inventory: [knife_blunt]
