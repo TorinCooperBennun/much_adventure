@@ -30,6 +30,7 @@ class command_obj;
 #include "command.h"
 #include "space.h"
 #include "generation.h"
+#include "parser.h"
 
 #include <iostream>
 #include <vector>

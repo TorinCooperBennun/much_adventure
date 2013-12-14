@@ -52,7 +52,7 @@ clean-all: clean
 
 main.o: main.h wagn.h command.h
 wagn.o: wagn.h item_base.h command.h space.h generation.h
-item_base.o: item_types.h item_types.h
+item_base.o: item_base.h item_types.h
 command.o: command.h wagn.h
 space.o: space.h item_base.h
 generation.o: generation.h item_base.h space.h

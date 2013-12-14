@@ -133,6 +133,9 @@ void wagn::generate_spaces()
 //        }
 //    }
 
+    yaml_parse story("story.yml");
+    story.parse(space_map);
+
     fill_map(space_map, coordinate(map_width, map_height), SPACE_EMPTY);
 
     create_walled_room(space_map, coordinate(2, 2), coordinate(8, 8),
