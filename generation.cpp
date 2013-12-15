@@ -103,48 +103,42 @@ int create_walled_room(
 
     /* TODO
      * fix this hack */
-    int x_min = min_x,
-        y_min = min_y,
-        x_max = max_x,
-        y_max = max_y;
+//    int x_min = min_x,
+//        y_min = min_y,
+//        x_max = max_x,
+//        y_max = max_y;
 
-    /* TODO
-     * declare wall pointers as wall_obj pointers
-     * before assigning in the map so they can be
-     * treated as walls and not ordinary spaces
-     * (set_strength fails)
-     */
     if (walled) {
         wall_obj *wall = NULL;
         for (int y = min_y; y <= max_y; y++) {
-            if (smap[y][x_min] != NULL) {
-                delete smap[y][x_min];
+            if (smap[y][min_x] != NULL) {
+                delete smap[y][min_x];
             }
             wall = new wall_obj();
             wall->set_strength(wall_strength);
-            smap[y][x_min] = wall;
+            smap[y][min_x] = wall;
 
-            if (smap[y][x_max] != NULL) {
-                delete smap[y][x_max];
+            if (smap[y][max_x] != NULL) {
+                delete smap[y][max_x];
             }
             wall = new wall_obj();
             wall->set_strength(wall_strength);
-            smap[y][x_max] = wall;
+            smap[y][max_x] = wall;
         }
         for (int x = min_x; x <= max_x; x++) {
-            if (smap[y_min][x] != NULL) {
-                delete smap[y_min][x];
+            if (smap[min_y][x] != NULL) {
+                delete smap[min_y][x];
             }
             wall = new wall_obj();
             wall->set_strength(wall_strength);
-            smap[y_min][x] = wall;
+            smap[min_y][x] = wall;
 
-            if (smap[y_max][x] != NULL) {
-                delete smap[y_max][x];
+            if (smap[max_y][x] != NULL) {
+                delete smap[max_y][x];
             }
             wall = new wall_obj();
             wall->set_strength(wall_strength);
-            smap[y_max][x] = wall;
+            smap[max_y][x] = wall;
         }
     }
 

@@ -37,36 +37,6 @@ command_obj::command_obj(const std::string& original_str)
             parameters.push_back(tokens[i]);
         }
     }
-
-//    std::stringstream stream(original_str);
-//
-//    auto wspace_check = [] (std::string &str) {
-//        if (str.size() == 0) {
-//            return true;
-//        }
-//        for (unsigned i = 0; i < str.size(); i++) {
-//            if (isspace(str[i])) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    };
-//
-//    while (wspace_check(action)) {
-//        if (!std::getline(stream, action, ' ')) {
-//            valid = false;
-//            break;
-//        }
-//    }
-//    
-//    std::transform(action.begin(), action.end(), action.begin(), tolower);
-//
-//    std::string token;
-//    while (std::getline(stream, token, ' ')) {
-//        if ((token != "") and (token != " ")) {
-//            parameters.push_back(token);
-//        }
-//    }
 }
 
 
@@ -84,7 +54,6 @@ command_obj::~command_obj()
 std::string command_obj::execute(wagn *wign)
 {
     if (!valid) {
-//        wign->print("Invalid command. Try 'help'.");
         return "lel";
     }
 
@@ -163,12 +132,6 @@ std::string command_obj::execute(wagn *wign)
             for (int i = 0; i < parameters.size(); i++) {
                 std::transform(parameters[i].begin(), parameters[i].end(), parameters[i].begin(), tolower);
             }
-//            /* little hack to set parameters lowercase */
-//            std::for_each(parameters.begin(), parameters.end(),
-//                    [](std::string& str) {
-//                        std::transform(str.begin(), str.end(), str.begin(), tolower);
-//                    }
-//            );
 
             direction dir;
 
@@ -237,8 +200,6 @@ std::string command_obj::execute(wagn *wign)
                                 movestr << "west";
                             }
                             wign->p_pos.set_xy(new_x, new_y);
-//                            wign->coord_x = new_x;
-//                            wign->coord_y = new_y;
                             movestr << ".";
                             break;
 
@@ -310,7 +271,6 @@ std::string command_obj::execute(wagn *wign)
             if (space_lookstr.size() > 0) {
                 lookstr << space->get_lookstr() << ". ";
             }
-//            lookstr << "You look around and see ";
 
             if (look_for_items) {
                 if (items.size() == 0) {

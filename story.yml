@@ -11,6 +11,12 @@
 # extra defaults for corridors (type: corridor):
 #
 # length: 1
+#
+# required attributes for corridors:
+#
+# start
+# end
+# direction
 
 rooms:
 

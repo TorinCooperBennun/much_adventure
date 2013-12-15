@@ -21,14 +21,6 @@
 #include "wagn.h"
 
 
-/* TODO
- * replace coord_x and coord_y in all files with
- * a coordinate class instance
- *
- * fix the 'move' command (detects walls very badly)
- */
-
-
 wagn::wagn()
 {
     std::stringstream notices;
@@ -42,8 +34,6 @@ wagn::wagn()
     map_height = 100;
     closed = false;
     p_pos = coordinate((map_width - 1) / 2, (map_height - 1) / 2);
-//    coord_x = (map_width - 1) / 2;
-//    coord_y = (map_height - 1) / 2;
 
     set_string_vectors();
 }
@@ -82,57 +72,6 @@ command_obj wagn::get_input()
 
 void wagn::generate_spaces()
 {
-//    /* generate all blanks */
-//    space_map = std::vector< std::vector<space_obj*> > (
-//        map_width, std::vector<space_obj*> (
-//            map_height, NULL
-//        )
-//    );
-//    for (int y = 0; y < map_height; y++) {
-//        for (int x = 0; x < map_width; x++) {
-//            space_map[y][x] = new space_obj(true);
-//        }
-//    }
-//
-//    /* generate 5x5 walled square in centre */
-//    int x_west  = map_width / 2 - 2,
-//        x_east  = map_width / 2 + 2,
-//        y_north = map_height / 2 + 2,
-//        y_south = map_height / 2 - 2;
-//
-//    x_west--; x_east--; y_north--; y_south--;
-//
-//    for (int y = y_south; y <= y_north; y++) {
-//        for (int x = x_west; x <= x_east; x++) {
-//            delete space_map[y][x];
-//            space_map[y][x] = new space_obj();
-//        }
-//    }
-//
-//    /* walls */
-//    for (int x = x_west; x <= x_east; x++) {
-//        delete space_map[y_north + 1][x];
-//        delete space_map[y_south - 1][x];
-//        space_map[y_north + 1][x] = new wall_obj();
-//        space_map[y_south - 1][x] = new wall_obj();
-//    }
-//    for (int y = y_south - 1; y <= y_north + 1; y++) {
-//        delete space_map[y][x_east - 1];
-//        delete space_map[y][x_west + 1];
-//        space_map[y][x_east - 1] = new wall_obj();
-//        space_map[y][x_west - 1] = new wall_obj();
-//    }
-
-//    space_map.clear();
-//
-//    for (int i = 0; i < map_height; i++) {
-//        space_map.push_back(std::vector<space_obj*>());
-//        for (int j = 0; j < map_width; j++) {
-//            space_obj *sp = new space_obj(true);
-//            space_map[i].push_back(sp);
-//        }
-//    }
-
     yaml_parse story("story.yml");
     story.parse(space_map);
 
@@ -142,8 +81,6 @@ void wagn::generate_spaces()
             true, 50, NULL);
     
     p_pos.set_xy(5, 5);
-//    coord_x = 5;
-//    coord_y = 5;
 
     std::ofstream f("map.txt");
     if (f.is_open()) {
