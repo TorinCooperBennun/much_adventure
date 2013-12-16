@@ -73,7 +73,9 @@ command_obj wagn::get_input()
 void wagn::generate_spaces()
 {
     yaml_parse story("story.yml");
-    story.parse(space_map);
+    if (story.parse(space_map) != 0) {
+        std::cerr << "Parse failed.\r\n";
+    }
 
     fill_map(space_map, coordinate(map_width, map_height), SPACE_EMPTY);
 

@@ -19,23 +19,34 @@
 # direction
 
 rooms:
-
-    start_room:
-        items: [torch, journal_start]
-        dark: false
-        string: "You wake up to find yourself in a small, drab room. There is a tiny barred window near the top of the wall on your left, through which you can see the Sun. It appears to be quite high in the sky. Opposite the windowed wall, there is a door, ajar."
-
-    corridor_1:
-        type: corridor
-        start: start_room
-        end: end_room
-        direction: northw
-        items: [wagn]
-
-    end_room:
-        items: [bread]
-        string: "K. Fuck off."
-
+    shit:
+        type: room
+        walled: true
+        wall_strength: 50
+        dark: true
+        size: [1,1]
+        items: [lel]
+        string:
 player:
-    starting_pos: start_room
-    starting_inventory: [knife_blunt]
+
+#rooms:
+#
+#    start_room:
+#        items: [torch, journal_start]
+#        dark: false
+#        string: "You wake up to find yourself in a small, drab room. There is a tiny barred window near the top of the wall on your left, through which you can see the Sun. It appears to be quite high in the sky. Opposite the windowed wall, there is a door, ajar."
+#
+#    corridor_1:
+#        type: corridor
+#        start: start_room
+#        end: end_room
+#        direction: north
+#        items: [wagn]
+#
+#    end_room:
+#        items: [bread]
+#        string: "K. Fuck off."
+#
+#player:
+#    starting_pos: start_room
+#    starting_inventory: [knife_blunt]
