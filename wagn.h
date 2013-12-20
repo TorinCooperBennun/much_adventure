@@ -22,6 +22,9 @@
 #define WAGN_H
 
 
+//#define PRINT_MAP_TO_FILE
+
+
 /* resolving cyclical dependency */
 class command_obj;
 
@@ -37,7 +40,10 @@ class command_obj;
 #include <string>
 #include <chrono>
 #include <random>
+
+#ifdef PRINT_MAP_TO_FILE
 #include <fstream>
+#endif
 
 
 class wagn
@@ -67,8 +73,7 @@ class wagn
         bool                                   closed;
 
         coordinate                             p_pos;
-//        int                                    coord_x,
-//                                               coord_y;
+        std::string                            p_name;
 
         std::vector<std::string>               empty_room_strings,
                                                items_seen_strings;

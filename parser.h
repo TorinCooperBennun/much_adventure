@@ -25,6 +25,7 @@
 #include <vector>
 #include <string>
 #include <yaml-cpp/yaml.h>
+#include <boost/utility.hpp>
 
 #include "space.h"
 #include "item_base.h"
@@ -34,7 +35,7 @@
 class yaml_room
 {
     public:
-        yaml_room() {}
+        yaml_room() { constructed = false; }
         ~yaml_room() {}
 
     public:
@@ -46,13 +47,15 @@ class yaml_room
         coordinate size;
         std::vector<base_item*> items;
         std::string str;
+
+        bool constructed;
 };
 
 
 class yaml_corridor : public yaml_room
 {
     public:
-        yaml_corridor() {}
+        yaml_corridor() { constructed = false; }
         ~yaml_corridor() {}
 
     public:
@@ -70,15 +73,15 @@ class yaml_parse
         yaml_parse() : _filename("story.yml") {}
         ~yaml_parse() {}
         
-        int parse(space_vect smap);
+        int parse(space_vect& smap);
     private:
         std::string _filename;
         std::vector<yaml_room *> rooms;
         std::vector<yaml_corridor *> corridors;
+
+        int generate(space_vect& smap);
+        int construct_recursive(space_vect& smap, yaml_room *room, bool is_corridor);
 };
-
-
-bool yaml_node_exists(YAML::Node parent, std::string child_name);
 
 
 #endif

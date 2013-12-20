@@ -101,13 +101,6 @@ int create_walled_room(
         }
     }
 
-    /* TODO
-     * fix this hack */
-//    int x_min = min_x,
-//        y_min = min_y,
-//        x_max = max_x,
-//        y_max = max_y;
-
     if (walled) {
         wall_obj *wall = NULL;
         for (int y = min_y; y <= max_y; y++) {

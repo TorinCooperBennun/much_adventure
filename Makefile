@@ -36,19 +36,19 @@ yaml-cpp-0.5.1/src/tag.o
 all: $(TITLE)
 
 $(TITLE): $(OBJS) yaml.a
-		$(CPP) $(CPPFLAGS) -o $@ $^ $(LIBS)
+	$(CPP) $(CPPFLAGS) -o $@ $^ $(LIBS)
 
 %.o: %.cpp
-		$(CPP) $(CPPFLAGS) -c -o $@ $<
+	$(CPP) $(CPPFLAGS) -c -o $@ $<
 
 yaml.a: $(YAML_OBJS)
 	ar rsu $@ $^
 
 clean:
-		rm -f $(TITLE) $(OBJS) wagnventures.exe
+	rm -f $(OBJS) $(TITLE) $(TITLE).exe
 
 clean-all: clean
-	rm -f yaml.a $(YAML_OBJS)
+	rm -f $(YAML_OBJS) yaml.a
 
 main.o: main.h wagn.h command.h
 wagn.o: wagn.h item_base.h command.h space.h generation.h

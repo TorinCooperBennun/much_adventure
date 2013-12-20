@@ -73,17 +73,21 @@ command_obj wagn::get_input()
 void wagn::generate_spaces()
 {
     yaml_parse story("story.yml");
-    if (story.parse(space_map) != 0) {
-        std::cerr << "Parse failed.\r\n";
+    if (story.parse(space_map) == 0) {
+        std::cerr << "Parsing story.yml succeeded.\r\n";
+    } else {
+        std::cerr << "## Error: Parsing story.yml failed!\r\n";
+        exit(-1);
     }
 
-    fill_map(space_map, coordinate(map_width, map_height), SPACE_EMPTY);
+//    fill_map(space_map, coordinate(map_width, map_height), SPACE_EMPTY);
+//
+//    create_walled_room(space_map, coordinate(2, 2), coordinate(8, 8),
+//            true, 50, NULL);
+//    
+//    p_pos.set_xy(5, 5);
 
-    create_walled_room(space_map, coordinate(2, 2), coordinate(8, 8),
-            true, 50, NULL);
-    
-    p_pos.set_xy(5, 5);
-
+#ifdef PRINT_MAP_TO_FILE
     std::ofstream f("map.txt");
     if (f.is_open()) {
         for (int y = map_height - 1; y >= 0; y--) {
@@ -117,6 +121,7 @@ void wagn::generate_spaces()
             f << "\r\n";
         }
     }
+#endif
 }
 
 

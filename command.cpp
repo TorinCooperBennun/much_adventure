@@ -129,7 +129,7 @@ std::string command_obj::execute(wagn *wign)
             int new_x = wign->p_pos.get_x(),
                 new_y = wign->p_pos.get_y();
 
-            for (int i = 0; i < parameters.size(); i++) {
+            for (unsigned i = 0; i < parameters.size(); i++) {
                 std::transform(parameters[i].begin(), parameters[i].end(), parameters[i].begin(), tolower);
             }
 
